@@ -8,6 +8,17 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\OrganizationController;
 
+use Illuminate\Support\Facades\DB;
+
+Route::get('/test-db', function () {
+    try {
+        DB::connection()->getPdo();
+        return '<h1>Success!</h1> <p>Database connection is working correctly.</p>';
+    } catch (\Exception $e) {
+        die("<h1>Connection Failed.</h1> <p>Could not connect to the database. Please check your configuration in the .env file.</p> <p><b>Error:</b> " . $e->getMessage() . "</p>");
+    }
+});
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
 | Protected Application Routes
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'organization.access'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------

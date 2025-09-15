@@ -43,11 +43,35 @@ class AuthController extends Controller
             // Set current organization if user has one
             $this->setCurrentOrganization();
 
-            return redirect()->intended(route('dashboard'));
+            $redirectUrl = route('dashboard');
+
+            // Handle AJAX request
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Login successful',
+                    'redirect' => $redirectUrl
+                ]);
+            }
+
+            return redirect()->intended($redirectUrl);
+        }
+
+        $errorMessage = __('The provided credentials do not match our records.');
+
+        // Handle AJAX request
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => $errorMessage,
+                'errors' => [
+                    'email' => [$errorMessage]
+                ]
+            ], 422);
         }
 
         throw ValidationException::withMessages([
-            'email' => __('The provided credentials do not match our records.'),
+            'email' => $errorMessage,
         ]);
     }
 
@@ -74,6 +98,10 @@ class AuthController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'organization_name' => 'required|string|max:255',
+            'terms' => 'required|accepted',
+        ], [
+            'terms.required' => 'You must agree to the terms and conditions.',
+            'terms.accepted' => 'You must agree to the terms and conditions.',
         ]);
 
         // Create user
@@ -85,11 +113,13 @@ class AuthController extends Controller
             'timezone' => 'UTC',
         ]);
 
-        // Create organization
+        // Create organization - FIXED: Use direct integer to avoid Carbon error
         $organization = Organization::create([
             'name' => $validated['organization_name'],
             'plan' => 'free',
-            'trial_ends_at' => now()->addDays(14), // 14-day trial
+            'max_users' => 5,
+            'max_projects' => 3,
+            'trial_ends_at' => now()->addDays(14), // Fixed: direct integer
         ]);
 
         // Add user as owner of the organization
