@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('milestones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('project_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->enum('status', ['planning', 'active', 'completed', 'cancelled'])

@@ -46,9 +46,9 @@
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">Total Projects</dt>
                             <dd class="flex items-baseline">
-                                <div class="text-2xl font-semibold text-gray-900">{{ $stats['projects']['total'] }}</div>
+                                <div class="text-2xl font-semibold text-gray-900">{{ $stats['projects']['total'] ?? 0 }}</div>
                                 <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
-                                    {{ $stats['projects']['active'] }} active
+                                    {{ $stats['projects']['active'] ?? 0 }} active
                                 </div>
                             </dd>
                         </dl>
@@ -79,9 +79,9 @@
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">My Tasks</dt>
                             <dd class="flex items-baseline">
-                                <div class="text-2xl font-semibold text-gray-900">{{ $stats['tasks']['mine'] }}</div>
+                                <div class="text-2xl font-semibold text-gray-900">{{ $stats['tasks']['mine'] ?? 0 }}</div>
                                 <div class="ml-2 flex items-baseline text-sm font-semibold text-blue-600">
-                                    {{ $stats['tasks']['completed'] }} done
+                                    {{ $stats['tasks']['completed'] ?? 0 }} done
                                 </div>
                             </dd>
                         </dl>
@@ -112,8 +112,8 @@
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">Overdue Tasks</dt>
                             <dd class="flex items-baseline">
-                                <div class="text-2xl font-semibold text-gray-900">{{ $stats['tasks']['overdue'] }}</div>
-                                @if($stats['tasks']['overdue'] > 0)
+                                <div class="text-2xl font-semibold text-gray-900">{{ $stats['tasks']['overdue'] ?? 0 }}</div>
+                                @if(($stats['tasks']['overdue'] ?? 0) > 0)
                                 <div class="ml-2 flex items-baseline text-sm font-semibold text-red-600">
                                     Need attention
                                 </div>
@@ -151,7 +151,7 @@
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">Team Members</dt>
                             <dd class="flex items-baseline">
-                                <div class="text-2xl font-semibold text-gray-900">{{ $stats['team_members'] }}</div>
+                                <div class="text-2xl font-semibold text-gray-900">{{ $stats['team_members'] ?? 0 }}</div>
                                 <div class="ml-2 flex items-baseline text-sm font-semibold text-gray-600">
                                     in organization
                                 </div>
@@ -184,7 +184,7 @@
                     </div>
                 </div>
                 <div class="flow-root">
-                    @if($recentProjects->count() > 0)
+                    @if(isset($recentProjects) && $recentProjects->count() > 0)
                     <ul class="divide-y divide-gray-200">
                         @foreach($recentProjects as $project)
                         <li class="px-4 py-4 sm:px-6">
@@ -250,7 +250,7 @@
                     <h3 class="text-lg leading-6 font-medium text-gray-900">Today's Tasks</h3>
                 </div>
                 <div class="flow-root">
-                    @if($todayTasks->count() > 0)
+                    @if(isset($todayTasks) && $todayTasks->count() > 0)
                     <ul class="divide-y divide-gray-200">
                         @foreach($todayTasks as $task)
                         <li class="px-4 py-4 sm:px-6">
@@ -288,7 +288,7 @@
                     </div>
                     @endif
                 </div>
-                @if($todayTasks->count() > 0)
+                @if(isset($todayTasks) && $todayTasks->count() > 0)
                 <div class="bg-gray-50 px-4 py-3">
                     <div class="text-sm">
                         <a href="{{ route('tasks.my') }}" class="font-medium text-cyan-700 hover:text-cyan-900">
@@ -300,7 +300,7 @@
             </div>
 
             <!-- Overdue Tasks -->
-            @if($overdueTasks->count() > 0)
+            @if(isset($overdueTasks) && $overdueTasks->count() > 0)
             <div class="bg-white shadow rounded-lg border-l-4 border-red-500">
                 <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                     <h3 class="text-lg leading-6 font-medium text-red-900">Overdue Tasks</h3>

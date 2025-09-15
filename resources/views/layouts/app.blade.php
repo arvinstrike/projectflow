@@ -162,7 +162,7 @@
 
                     <div class="flex items-center gap-x-4 lg:gap-x-6">
                         <!-- Notifications -->
-                        <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500" x-data="{ open: false }" @click="open = !open">
+                        <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 relative" x-data="{ open: false }" @click="open = !open">
                             <span class="sr-only">View notifications</span>
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5.5-5.5M15 17l-5.5-5.5M15 17V7a6 6 0 10-12 0v10" />
